@@ -1,0 +1,157 @@
+{% extends 'layouts/base-caosp.html' %}
+
+{% block title %} {{ college.etablissement}} {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<main class="content">
+   <div class="container-fluid p-0">
+
+      <div class="row mb-2 mb-xl-3">
+         <div class="col-auto d-none d-sm-block">
+            <h3><strong>Carte de visite - Collège</strong></h3>
+         </div>
+
+         <div class="col-auto ml-auto text-right mt-n1">
+            <nav aria-label="breadcrumb">
+               <ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
+                  <li class="breadcrumb-item"><a href="#">CAOSP</a></li>
+                  <li class="breadcrumb-item"><a href="#">Tableau de bord</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Collèges</li>
+               </ol>
+            </nav>
+         </div>
+      </div>
+      <div class="col-12 col-md-8 mx-auto">
+         <div class="card p-12">
+
+            <div class="mx-4 mt-4 flex-container">
+               <span class="h1">{{college.etablissement}}</span>
+               <span class="h3 float-right"> Code : {{college.code}}</span>
+            </div>
+            <div class="card-body  p-12">
+               <div class="m-sm-4">
+                  <div class="mb-2">
+                     <div class="flex-grow-1">
+                        <strong class="float-right text-navy">IEF : {{college.ief}}</strong>
+                        <strong>Académie : </strong>IA de Ziguinchor<br />
+                        <strong class="float-right text-navy">Téléphone : {{college.fixe}}</strong>
+                        <strong>Email : </strong> {{college.email}}<br />
+                        <strong class="float-right text-navy">Adresse : {{college.adresse}}</strong>
+                        <strong class="">Statut : {{college.statut}} </strong><br />
+                        <strong class="float-right text-navy">Contact : {{college.mobile}}</strong>
+                        <strong>Principal : {{college.nomce}}</strong><br />
+                     </div>
+                  </div>
+               </div>
+               <div class="m-sm-4">
+                  <div class="mb-2">
+                     <div class="flex-grow-1">
+                        <strong>Conseiller responsable : </strong> {{college.conseiller.name}}<br />
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="mx-10 m-4">
+               <a href="{% url 'college:index'%} " class="btn btn-outline-primary">Retour</a>
+               {% if request.user.is_staff %}
+               <a href=" {% url 'college:edit' college.slug %} " class="btn btn-info">Editer</a>
+               <a href=" {% url 'college:edit' college.slug %} " class="btn btn-success">Ajouter Nouveau quotepart</a>
+               <span class="float-right">
+                  <button id="btn-college-sup" type="button" data-toggle="modal" data-target="#supprimer"
+                     class="btn btn-outline-danger text-blue-600" title="Supprimer" data-id="{{ college.slug }}"
+                     data-etablissement="{{college.etablissement}}">
+                     <i class="align-middle mr-2" data-feather="alert-triangle"></i>
+                     Delete
+                  </button>
+
+                  <!-- <a href="{% url 'college:delete' college.id %}" class="btn btn-outline-danger">Supprimer</a> -->
+               </span>
+               {% endif %}
+            </div>
+         </div>
+      </div>
+   </div>
+</main>
+
+
+<!-- Modal suppression -->
+<div class="modal fade" id="supprimer" tabindex="-1" role="dialog" aria-labelledby="sexampleModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title text-dark h3" id="sexampleModalLabel">Suppression de {{ college.etablissement }}
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <form method="POST">
+               {% csrf_token %}
+               <input name="id_supprimer" type="hidden" value="yes">
+               <label id="label_id_s" class="h4 text-dark checkbox-inline"> <strong>Etes-vous sûr de
+                     vouloir supprimer les données de : </strong></label></br> {{ college.etablissement }} ?
+
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-danger">Delete</button>
+               </div>
+            </form>
+         </div>
+
+      </div>
+   </div>
+</div>
+<!-- end modal-->
+
+<br><br>
+
+<script type="text/javascript">
+
+   // modification
+
+   $(document).on('click', '#btn-college-mod', function () {
+      let college_slug = $(this).data('slug');
+      let college = $(this).data('college');
+      $('#id_modified').val(college_slug);
+
+   })
+
+   // deleting of college
+
+   $(document).on('click', '#btn-college-sup', function () {
+      let college_slug = $(this).data('slug');
+      let college = $(this).data('college');
+      $('#id_supprimer').val(college_slug);
+
+   })
+
+
+
+</script>
+
+
+<script>
+
+   $(document).ready(function () {
+      $("#search").on("keyup", function () {
+         var value = $(this).val().toLowerCase();
+         $("#myTable tr").filter(function () {
+            $(this).toggle($(this).text().toLocaleLowerCase().indexOf(value) > -1)
+         });
+      });
+   });
+
+</script>
+
+{% endblock content %}
+
+
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

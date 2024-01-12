@@ -1,0 +1,217 @@
+{% extends 'layouts/base-caosp.html' %}
+
+{% block title %} Blank Page {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% load static %}
+
+{% block content %}
+
+<main class="content">
+   <div class="container-fluid p-0">
+
+       <div class="row mb-2 mb-xl-3">
+           <div class="col-auto d-none d-sm-block">
+               <h3>
+                   <strong>Les Quote-parts</strong>
+                   {% if request.user.is_staff %}
+                   <span>
+                       <a class="" href="{% url 'college:add' %}">Ajouter</a>
+                   </span>
+                   {% endif %}
+                   <form class="d-none d-lg-inline-block" method="GET">
+                      <div class="input-group input-group-navbar">
+                         <span class="form-control form-check-inline" >
+                            {{form.quote_annee}}
+                         </span>
+                         <button class="btn text-sm" type="submit">
+                                 <i class="align-left" data-feather="search"></i>
+                        </button>
+                      </div>
+                   </form>
+               </h3>
+           </div>
+
+           <div class="col-auto ml-auto text-right mt-n1">
+               <nav aria-label="breadcrumb">
+                   <ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
+                       <li class="breadcrumb-item"><a href="#">CAOSP</a></li>
+                       <li class="breadcrumb-item"><a href="#">Tableau de bord</a></li>
+                       <li class="breadcrumb-item active" aria-current="page">colleges</li>
+                   </ol>
+               </nav>
+           </div>
+       </div>
+       
+       
+       <div class="card">
+
+               <div class="m-sm-4">
+                   <table class="table table-sm">
+                       <thead>
+                           <tr>
+                               <th>Année</th>
+                               <th>Etablissement</th>
+                               <th>Effectif</th>
+                               <th>Montant Du</th>
+                               <th>Versé</th>
+                               <th>Conseiller Responsable</th>
+                               <th class="text-right">Actions</th>
+                           </tr>
+                       </thead>
+                       <tbody>
+                        <tr>
+                           <td rowspan="2">0</td>
+                           <td>1</td>
+                           <td>2</td>
+                           <td>3</td>
+                           <td>4</td>
+                           <td>5</td>
+                           <td>6</td>
+                        </tr>
+                        <tr>
+                           <td>1</td>
+                           <td>2</td>
+                           <td>3</td>
+                           <td>4</td>
+                           <td>5</td>
+                           <td>6</td>
+                        </tr>
+                        <tr>
+                           <td rowspan="2">0</td>
+                           <td>1</td>
+                           <td>2</td>
+                           <td>3</td>
+                           <td>4</td>
+                           <td>5</td>
+                           <td>6</td>
+                        </tr>
+                        <tr>
+                           <td>1</td>
+                           <td>2</td>
+                           <td>3</td>
+                           <td>4</td>
+                           <td>5</td>
+                           <td>6</td>
+                        </tr>
+                       </tbody>
+                        
+                   </table>
+
+               </div>
+           </div>
+       
+   </div>
+</main>
+
+<!-- Modal modifier -->
+<div class="modal fade" id="modifier" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title text-dark text-center" id="exampleModalLabel">Modification</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form method="post">
+            {% csrf_token %}
+            <div class="modal-body">
+
+               <input name="id_modified" type="hidden" id="id_modified">
+
+               <label id="label_id" class="text-dark checkbox-inline"> <strong id="strong_id"> This bill has been paid?</strong></label>
+
+               <input type="radio" id="html" name="modified" value="True">
+               <label class="text-white bg-primary" for="html">Yes</label>
+
+               <input type="radio" id="css" name="modified" value="False">
+               <label class="text-white bg-danger" for="css">No</label><br>
+
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+<!-- end modal-->
+
+<!-- Modal suppression -->
+<div class="modal fade" id="supprimer" tabindex="-1" role="dialog" aria-labelledby="sexampleModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title text-dark" id="sexampleModalLabel">Suppression de QUOTE PART</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <form method="post">
+               {% csrf_token %}
+               <input name="id_supprimer" type="hidden" id="id_supprimer">
+               <label id="label_id_s" class="text-dark checkbox-inline"> <strong id="strong_id_s">Etes-vous sûr de vouloir supprimer cet enregistrement ?</strong></label>
+
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-danger">Delete</button>
+               </div>
+            </form>
+         </div>
+
+      </div>
+   </div>
+</div>
+<!-- end modal-->
+
+<br><br>
+
+<script type="text/javascript">
+
+   // modification
+
+   $(document).on('click', '#btn-invoice-mod', function(){
+      let invoice_id = $(this).data('id');
+      let etablissement = $(this).data('etablissement');
+      $('#id_modified').val(invoice_id);
+
+   })
+
+   // deleting of invoice
+
+   $(document).on('click', '#btn-invoice-sup', function(){
+      let invoice_id = $(this).data('id');
+      let etablissement = $(this).data('etablissement');
+      $('#id_supprimer').val(invoice_id);
+
+   })
+
+ 
+
+</script>
+
+
+<script>
+
+   $(document).ready(function(){
+      $("#search").on("keyup", function(){
+         var value = $(this).val().toLowerCase();
+         $("#myTable tr").filter(function(){
+            $(this).toggle($(this).text().toLocaleLowerCase().indexOf(value)>-1)
+         });
+      });
+   });
+
+</script>
+
+{% endblock %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

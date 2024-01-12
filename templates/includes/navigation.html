@@ -1,0 +1,89 @@
+{% load static %}
+<nav class="navbar navbar-expand navbar-light navbar-bg d-print-none">
+  <a class="sidebar-toggle d-flex">
+    <i class="hamburger align-self-center"></i>
+  </a>
+
+  <form class="d-none d-sm-inline-block">
+    <div class="input-group input-group-navbar">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Rechercher..."
+        aria-label="Search"
+      />
+      <button class="btn" type="button">
+        <i class="align-middle" data-feather="search"></i>
+      </button>
+    </div>
+  </form>
+
+  <div class="navbar-collapse collapse">
+    <ul class="navbar-nav navbar-align">
+		
+      <li class="nav-item dropdown">
+        
+        <a
+          class="nav-link dropdown-toggle d-none d-sm-inline-block"
+          href="#"
+          data-toggle="dropdown"
+        >
+          <span class="text-dark"> Année </span>
+        </a>
+
+        <div class="dropdown-menu dropdown-menu-right">
+			<div class="row">
+				<div class="col-sm-2"></div>
+				{% comment %} <label class="col-form-label col-sm-2 text-sm-right pt-sm-0">Radios</label> {% endcomment %}
+				<div class="col-sm-8 ">
+					<label class="form-check  text-center">
+						<input name="radio-3" type="radio" class="form-check-input" value="2023-2024" checked>
+						<span class="form-check-label">2023-2024</span>
+					</label>
+					<label class="form-check text-center">
+						<input name="radio-3" type="radio" class="form-check-input" value="2023-2024">
+						<span class="form-check-label">2024-2025</span>
+					</label>
+					<label class="form-check text-center">
+						<input name="radio-3" type="radio" class="form-check-input" value="2023-2024">
+						<span class="form-check-label">2025-2026</span>
+					</label>
+				</div>
+				<div class="col-sm-2"></div>
+			</div>
+		</div>
+      </li>
+      <li class="nav-item dropdown">
+        <a
+          class="nav-icon dropdown-toggle d-inline-block d-sm-none"
+          href="#"
+          data-toggle="dropdown"
+        >
+          <i class="align-middle" data-feather="settings"></i>
+        </a>
+
+        <a
+          class="nav-link dropdown-toggle d-none d-sm-inline-block"
+          href="#"
+          data-toggle="dropdown"
+        >
+          <img
+            src="{% static 'assets/img/avatars/taureau.png' %}"
+            class="avatar rounded-full mr-1"
+            alt="Charles Hall"
+          />
+          <span class="text-dark"> {{ request.user.name }} </span>
+        </a>
+
+        <div class="dropdown-menu dropdown-menu-right">
+			<a class="dropdown-item" href="{% url 'account:profile' %}">
+			  <i class="align-middle mr-1" data-feather="user"></i> Profile</a
+			>
+			
+			<div class="dropdown-divider"></div>
+			<a class="dropdown-item" href="{% url 'account:logout' %}">Log out</a>
+		  </div>
+      </li>
+    </ul>
+  </div>
+</nav>
